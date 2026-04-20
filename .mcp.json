@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "notebooklm": {
+      "command": "C:\\Users\\edo_m\\.local\\bin\\notebooklm-mcp.exe",
+      "args": []
+    },
+    "atlassian": {
+      "command": "mcp-atlassian",
+      "args": []
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "fitp-tornei": {
+      "command": "C:\\Users\\edo_m\\OneDrive\\Documenti\\VS_Wrk\\fitp-mcp-server\\.venv\\Scripts\\python.exe",
+      "args": [
+        "C:\\Users\\edo_m\\OneDrive\\Documenti\\VS_Wrk\\fitp-mcp-server\\server.py"
+      ],
+      "cwd": "C:\\Users\\edo_m\\OneDrive\\Documenti\\VS_Wrk\\fitp-mcp-server"
+    }
+  }
+}

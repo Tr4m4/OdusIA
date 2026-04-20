@@ -1,0 +1,69 @@
+"""
+FITP MCP Server
+Server MCP per la ricerca tornei di tennis nelle zone pre-configurate,
+utilizzando il Portale Unico Competizioni della FITP (fitp.it).
+
+Strumenti disponibili:
+  - cerca_tornei_fitp: cerca i prossimi tornei attorno a Milano Via Valsugana 
+    (20km) e Tortona (10km)
+"""
+
+import logging
+from mcp.server.fastmcp import FastMCP
+from scraper import cerca_tornei_nelle_zone, formatta_risultati
+
+logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
+
+mcp = FastMCP(
+    name="FITP Tennis Tornei",
+    instructions=(
+        "Questo server fornisce i dati sui tornei di tennis in programma "
+        "nelle zone di Milano (via Valsugana, raggio 20km) e Tortona (raggio 10km), "
+        "recuperandoli in tempo reale dal sito ufficiale della FITP (fitp.it). "
+        "Usa lo strumento 'cerca_tornei_fitp' per ottenere i tornei disponibili."
+    ),
+)
+
+
+@mcp.tool(
+    name="cerca_tornei_fitp",
+    description=(
+        "Cerca e restituisce i tornei di tennis nelle zone pre-configurate: "
+        "1) intorno a Milano Via Valsugana (raggio 20km), "
+        "2) intorno a Tortona (raggio 10km). "
+        "I dati vengono recuperati in tempo reale dal Portale Unico Competizioni "
+        "della FITP (fitp.it). "
+        "Parametri: solo_prossimi (bool, default True) – se True mostra solo i tornei futuri."
+    ),
+)
+def cerca_tornei_fitp(solo_prossimi: bool = True) -> str:
+    """
+    Cerca i tornei di tennis nelle due zone configurate:
+    - Milano Via Valsugana (20km di raggio)
+    - Tortona (10km di raggio)
+
+    Args:
+        solo_prossimi: Se True (default), mostra solo i tornei in programma. 
+                       Se False, include anche quelli in corso e recenti.
+
+    Returns:
+        Stringa formattata con l'elenco dei tornei disponibili nelle due zone.
+    """
+    try:
+        risultati = cerca_tornei_nelle_zone(solo_prossimi=solo_prossimi)
+        testo = formatta_risultati(risultati)
+        tot = sum(len(v) for v in risultati.values())
+
+        header = (
+            f"🔍 Ricerca tornei FITP completata.\n"
+            f"Trovati {tot} tornei totali nelle 2 zone configurate.\n"
+            f"(Fonte: fitp.it – dati aggiornati in tempo reale)\n"
+        )
+        return header + testo
+    except Exception as e:
+        logging.error(f"Errore nel tool cerca_tornei_fitp: {e}")
+        return f"❌ Errore durante la ricerca tornei: {str(e)}"
+
+
+if __name__ == "__main__":
+    mcp.run()

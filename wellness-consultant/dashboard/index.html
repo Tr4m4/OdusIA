@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wellness Pro | Performance & Health Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="dark-mode">
+    <div class="glass-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <span class="logo-icon">🌿</span>
+                <h2>WellnessPro</h2>
+            </div>
+            <div class="profile-card">
+                <div class="profile-img">47</div>
+                <div class="profile-info">
+                    <h3>Cliente Delta</h3>
+                    <p>1.78m | 65kg | Normopeso</p>
+                </div>
+            </div>
+            <div class="protocol-badges">
+                <span class="badge red">GERD Protocol</span>
+                <span class="badge blue">Knee-VMO Focus</span>
+            </div>
+            <nav class="week-nav">
+                <ul>
+                    <li class="active" data-day="lun">Lunedì</li>
+                    <li data-day="mar">Martedì</li>
+                    <li data-day="mer">Mercoledì</li>
+                    <li data-day="gio">Giovedì</li>
+                    <li data-day="ven">Venerdì</li>
+                    <li data-day="sab">Sabato</li>
+                    <li data-day="dom">Domenica</li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="content-area">
+            <header class="main-header">
+                <h1 id="current-day-title">Lunedì: Forza & Integrità</h1>
+                <div class="header-stats">
+                    <div class="stat"><span>Target</span> 1900 kcal</div>
+                    <div class="stat"><span>Load</span> 2.5kg - 12.5kg</div>
+                </div>
+            </header>
+
+            <section id="daily-plan">
+                <!-- Training Section -->
+                <div class="section-card training">
+                    <div class="section-header">
+                        <h2>🏋️ Allenamento Forza (Low Impact)</h2>
+                        <span class="complexity">Professional Level</span>
+                    </div>
+                    <div class="exercise-grid">
+                        <!-- I video verranno iniettati dinamicamente da script.js -->
+                    </div>
+                </div>
+
+                <!-- Nutrition Section -->
+                <div class="section-card nutrition">
+                    <div class="section-header">
+                        <h2>🥗 Protocollo Macronutrienti (Anti-Reflusso)</h2>
+                        <div class="prep-legend">
+                            <span class="dot batch"></span> Weekend Prep
+                            <span class="dot fresh"></span> Night-Before
+                        </div>
+                    </div>
+                    <div class="meal-list">
+                        <!-- I pasti verranno iniettati dinamicamente da script.js -->
+                    </div>
+                </div>
+
+                <!-- Scientific Side-Panel (Dynamic) -->
+                <div class="section-card science-panel">
+                    <div class="section-header">
+                        <h2>🔬 Focus Bio-Chimico del Giorno</h2>
+                    </div>
+                    <div id="science-content" class="science-grid">
+                        <!-- Contenuto dinamico -->
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+# --- OdusIA Git Ignore Protocol ---
+
+# Secrets & Keys (CRITICAL)
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+.npm
+.eslintcache
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+env/
+.env.python
+.pytest_cache/
+
+# Project Specific
+travel-manager/coverage/
+travel-manager/curations/*.md
+!travel-manager/curations/README.md
+luxury-travel-curator/curations/
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+.gemini/
+antigravity/
+
+# Scratch & Temporary
+scratch/
+test_*.js
+list_models.js
+test_api.js
+test_flash3.js
+test_gemini3.js
