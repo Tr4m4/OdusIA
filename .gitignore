@@ -7,6 +7,24 @@
 *.pem
 *.key
 
+# Core Workspace Files (Kept local, excluded from project repo)
+AGENTS.md
+AGENTS_SHARED.md
+AGENTS_NEWS.md
+AGENTS_OECO.md
+.mcp.json
+list_notebooks.py
+
+# Non-Travel Projects (Must stay separate)
+ai-daily-news-agent/
+ai-daily-news-agent.rar
+fitp-email-agent/
+fitp-mcp-server/
+wellness-consultant/
+oeconomia/
+odus-hub-server.js
+README_GATEWAY.md
+
 # Node.js
 node_modules/
 npm-debug.log*

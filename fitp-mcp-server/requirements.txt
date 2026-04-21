@@ -1,5 +1,0 @@
-mcp
-requests
-beautifulsoup4
-geopy
-lxml
