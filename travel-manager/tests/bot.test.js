@@ -1,9 +1,9 @@
 import { describe, it, expect } from 'vitest';
-import { AtlasBot } from '../js/bot.js';
+import { SophosBot } from '../js/bot.js';
 
-describe('AtlasBot Logic', () => {
-  const matchIntent = AtlasBot.matchIntent;
-  const buildResponse = AtlasBot._test.buildResponse;
+describe('SophosBot Logic', () => {
+  const matchIntent = SophosBot.matchIntent;
+  const buildResponse = SophosBot._test.buildResponse;
 
   describe('Intent Matching', () => {
     it('should match a destination (e.g., Japan)', () => {
@@ -18,7 +18,7 @@ describe('AtlasBot Logic', () => {
 
     it('should match hotel/spa keywords', () => {
       const match = matchIntent('Cerco un hotel con spa');
-      expect(match).toEqual({ type: 'hotelSearch' });
+      expect(match).toEqual({ type: 'curator_trigger' });
     });
 
     it('should return null for unknown input', () => {
@@ -28,21 +28,21 @@ describe('AtlasBot Logic', () => {
   });
 
   describe('Response Generation', () => {
-    it('should build a greeting response', () => {
-      const response = buildResponse('ciao');
-      expect(response).toContain('Atlas');
+    it('should build a greeting response', async () => {
+      const response = await buildResponse('ciao');
+      expect(response).toContain('Sophos');
       expect(response).toContain('Senior Curator');
     });
 
-    it('should return destination details', () => {
-      const response = buildResponse('Giappone');
+    it('should return destination details', async () => {
+      const response = await buildResponse('Giappone');
       expect(response).toContain('Giappone');
       expect(response).toContain('Budget medio');
     });
 
-    it('should handle fallback for unknown intents', () => {
-      const response = buildResponse('abcxyz');
-      expect(response).toContain('Senior Curator');
+    it('should handle fallback for unknown intents', async () => {
+      const response = await buildResponse('abcxyz');
+      expect(response).toContain('Mock AI response'); // Using our setup.js mock
     });
   });
 });

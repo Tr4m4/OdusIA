@@ -8,6 +8,7 @@ import {
   renderDashboard, 
   renderUpcomingGrid, 
   renderHistory, 
+  renderHotelsView,
   switchView,
   editBooking,
   previewAttachment,
@@ -18,9 +19,17 @@ import {
   closeModal,
   openPlanTripModal,
   closePlanTripModal,
-  changeWizardStep
+  changeWizardStep,
+  showToast,
+  showLuxuryConfirm,
+  showHotelDetails,
+  closeHotelDetailModal,
+  viewComparison,
+  closeComparisonModal,
+  handleHotelSearch,
+  switchHotelTab
 } from './ui.js';
-import { AtlasBot } from './bot.js';
+import { SophosBot } from './bot.js';
 import { 
   handleAddBooking, 
   handlePlanTrip, 
@@ -30,12 +39,16 @@ import {
   removeHotelRow, 
   updateHotelField,
   addHotelsToPlan,
+  addHotelFromRepo,
   createTripAutomatically,
   handleSaveBooking,
   deleteBookingPrompt,
   archiveTrip,
   exportCurationToRepo,
-  deleteHotel
+  deleteHotel,
+  saveImportedHotel,
+  openImportModal,
+  closeImportModal
 } from './handlers.js';
 
 // 🛡️ GLOBAL EXPORTS (Hardened: Assigned at the very top)
@@ -61,6 +74,16 @@ window.previewAttachment = previewAttachment;
 window.closePreviewModal = closePreviewModal;
 window.renderEditAttachments = renderEditAttachments;
 window.renderPlanHotels = renderPlanHotels;
+window.renderDashboard = renderDashboard;
+window.renderUpcomingGrid = renderUpcomingGrid;
+window.renderHistory = renderHistory;
+window.renderHotelsView = renderHotelsView;
+window.showToast = showToast;
+window.showLuxuryConfirm = showLuxuryConfirm;
+window.showHotelDetails = showHotelDetails;
+window.closeHotelDetailModal = closeHotelDetailModal;
+window.viewComparison = viewComparison;
+window.closeComparisonModal = closeComparisonModal;
 
 window.handleSaveBooking = handleSaveBooking;
 window.archiveTrip = archiveTrip; 
@@ -68,6 +91,12 @@ window.changeWizardStep = changeWizardStep;
 window.deleteBookingPrompt = deleteBookingPrompt;
 window.exportCurationToRepo = exportCurationToRepo;
 window.deleteHotel = deleteHotel;
+window.openImportModal = openImportModal;
+window.closeImportModal = closeImportModal;
+window.saveImportedHotel = saveImportedHotel;
+window.addHotelFromRepo = addHotelFromRepo;
+window.handleHotelSearch = handleHotelSearch;
+window.switchHotelTab = switchHotelTab;
 
 document.addEventListener('DOMContentLoaded', async () => {
   console.info('🚀 OdusIA Initializing...');
@@ -148,6 +177,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     // 3a. Sidebar Navigation
     const navLink = e.target.closest('.nav-links li');
     if (navLink && navLink.dataset.view) {
+      // 🛡️ Logic for Active Class (Luxury UI Sync)
+      document.querySelectorAll('.nav-links li').forEach(l => l.classList.remove('active'));
+      navLink.classList.add('active');
+
       console.debug('🚀 Sidebar Navigation:', navLink.dataset.view);
       const view = navLink.dataset.view;
       if (typeof window.switchView === 'function') window.switchView(view);
@@ -175,9 +208,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // 5. Initialize Chatbot (Sandboxed)
   try {
-    AtlasBot.init();
+    SophosBot.init();
   } catch (err) {
-    console.error('🛡️ AtlasBot Initialization Failed (Non-Blocking):', err);
+    console.error('🛡️ SophosBot Initialization Failed (Non-Blocking):', err);
   }
 
   // 6. Set up Preview Listeners

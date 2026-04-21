@@ -360,6 +360,31 @@ export const HOTEL_REPOSITORY = [
             "Bagno nella Grotta di Roccia"
           ]
         }
+      },
+      {
+        "name": "Hotel Sonne",
+        "focus": "Autorità/Isolamento",
+        "spa": "Piscina a sfioro esterna panoramica + piscina interna zen, saune fieno",
+        "distanceKm": 310,
+        "distanceTime": "3h 45m",
+        "price": "€350-500",
+        "rating": 9.9,
+        "link": "https://www.hotel-sonne.com",
+        "details": {
+          "description": "Un'icona dell'ospitalità alpina situata nel cuore pulsante dell'Alpe di Siusi. Gestito dalla stessa famiglia da oltre un secolo, lo Sporthotel Sonne fonde un design contemporaneo in legno e vetro con una posizione impareggiabile che permette di sciare direttamente dalla porta dell'hotel.",
+          "spa_size": "2.500 m²",
+          "pools": {
+            "internal": 1,
+            "external": 1,
+            "desc": "Infinity pool riscaldata vista Dolomiti + Piscina interna Zen"
+          },
+          "location": "Alpe di Siusi (1.800m), Località Piz 6. Accesso Ski-in/Ski-out totale.",
+          "highlights": [
+            "Accesso Diretto Piste (Ski-in/out)",
+            "Vista 360° su Sassolungo e Catinaccio",
+            "Sauna al Fieno d'Alpeggio"
+          ]
+        }
       }
     ]
   },
@@ -501,28 +526,146 @@ export const HOTEL_REPOSITORY = [
     ]
   },
   {
-    "zone": "prova",
+    "zone": "LIGURIA",
     "icon": "fa-map-location-dot",
     "hotels": [
       {
-        "name": "Aethos Monterosa",
-        "spa": "Piscina interna semi-olimpionica + esterna tra i larici, saune bio",
-        "distanceKm": 175,
-        "distanceTime": "2h 10m",
-        "distance": "175 KM / 2h 10m",
-        "price": "€280-440",
-        "rating": 9,
-        "link": "https://aethos.com/monterosa/"
+        "name": "Grand Hotel Miramare",
+        "spa": "Trattamenti olistici e cromoterapia",
+        "rating": 9.5,
+        "price": "€400-€650/notte",
+        "distance": "180 km, 2h 30m via A7",
+        "link": "https://www.grandhotelmiramare.it",
+        "details": {
+          "description": "Hotel storico liberty affacciato sul Golfo del Tigullio.",
+          "spa_size": "800 mq",
+          "pools": {
+            "internal": 1,
+            "external": 1,
+            "desc": "1 interne, 1 esterne"
+          },
+          "location": "Santa Margherita Ligure",
+          "highlights": [
+            "Giardini lussureggianti",
+            "Piscina panoramica",
+            "Design d'epoca"
+          ]
+        }
       },
       {
-        "name": "Principe delle Nevi",
-        "spa": "Piscina esterna riscaldata on-the-slopes + interna di design",
-        "distanceKm": 190,
-        "distanceTime": "2h 25m",
-        "distance": "190 KM / 2h 25m",
-        "price": "€340-520",
-        "rating": 9,
-        "link": "https://themlegacy.com/principe-delle-nevi"
+        "name": "Grand Hotel Alassio Beach & SPA Resort",
+        "spa": "Talassoterapia e rituali di purificazione",
+        "rating": 9.6,
+        "price": "€350-€600/notte",
+        "distance": "215 km, 2h 45m via A7",
+        "link": "https://www.ghalassio.com",
+        "details": {
+          "description": "Resort iconico situato direttamente sulla sabbia fine della baia del sole.",
+          "spa_size": "1500 mq",
+          "pools": {
+            "internal": 1,
+            "external": 1,
+            "desc": "1 interne, 1 esterne"
+          },
+          "location": "Alassio",
+          "highlights": [
+            "SPA Thalassio di prestigio",
+            "Accesso diretto spiaggia",
+            "Ristorante vista mare"
+          ]
+        }
+      },
+      {
+        "name": "Royal Hotel Sanremo",
+        "spa": "SPA Royal Wellness con percorsi emozionali",
+        "rating": 9.7,
+        "price": "€380-€600/notte",
+        "distance": "270 km, 3h 15m via A7",
+        "link": "https://www.royalhotelsanremo.com",
+        "details": {
+          "description": "Icona di stile ed eleganza sulla Riviera dei Fiori.",
+          "spa_size": "900 mq",
+          "pools": {
+            "internal": 1,
+            "external": 1,
+            "desc": "1 interne, 1 esterne"
+          },
+          "location": "Sanremo",
+          "highlights": [
+            "Parco tropicale secolare",
+            "Piscina riscaldata vista mare",
+            "Servizio impeccabile"
+          ]
+        }
+      },
+      {
+        "name": "Grand Hotel Arenzano",
+        "spa": "SPA & Fitness center",
+        "rating": 9.1,
+        "price": "€170-€290",
+        "distance": "150 km, 1h 45m",
+        "link": "https://www.gharenzano.it",
+        "details": {
+          "description": "Oasi di relax",
+          "spa_size": "600 mq",
+          "pools": {
+            "internal": 1,
+            "external": 1,
+            "desc": "1 interne, 1 esterne"
+          },
+          "location": "Arenzano",
+          "highlights": [
+            "Piscina panoramica",
+            "Vicinanza mare",
+            "SPA moderna"
+          ]
+        }
+      },
+      {
+        "name": "Imperiale Palace",
+        "spa": "SPA di alto livello",
+        "rating": 9.5,
+        "price": "€320-€400",
+        "distance": "175 km, 2h 10m",
+        "link": "https://www.hotelimperiale.it",
+        "details": {
+          "description": "Residenza nobiliare",
+          "spa_size": "1000 mq",
+          "pools": {
+            "internal": 1,
+            "external": 1,
+            "desc": "1 interne, 1 esterne"
+          },
+          "location": "S. Margherita Ligure",
+          "highlights": [
+            "Spiaggia privata",
+            "SPA completa",
+            "Parco"
+          ]
+        }
+      },
+      {
+        "name": "Excelsior Palace",
+        "spa": "Health Club & SPA",
+        "rating": 9.6,
+        "price": "€350-€400",
+        "distance": "170 km, 2h 00m",
+        "link": "https://www.excelsiorpalace.it",
+        "details": {
+          "description": "Lusso senza tempo a Rapallo",
+          "spa_size": "1200 mq",
+          "pools": {
+            "internal": 1,
+            "external": 2,
+            "desc": "1 interne, 2 esterne"
+          },
+          "location": "Rapallo",
+          "highlights": [
+            "Beach club",
+            "Vista Portofino",
+            "SPA di design"
+          ]
+        }
       }
     ]
   }

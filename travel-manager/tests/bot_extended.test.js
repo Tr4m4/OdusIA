@@ -1,33 +1,33 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { AtlasBot } from '../js/bot.js';
+import { SophosBot } from '../js/bot.js';
 
-describe('AtlasBot Deep Coverage', () => {
-  const { buildResponse } = AtlasBot._test;
+describe('SophosBot Deep Coverage', () => {
+  const { buildResponse } = SophosBot._test;
 
-  it('should cover all thematic responses', () => {
+  it('should cover all thematic responses', async () => {
     // Testing the logic via buildResponse through intent matching
-    expect(buildResponse('estate')).toContain('Grecia');
-    expect(buildResponse('inverno')).toContain('Maldive');
-    expect(buildResponse('visto')).toContain('Italiani');
-    expect(buildResponse('grazie')).toContain('piacere assisterla');
+    expect(await buildResponse('estate')).toContain('Grecia');
+    expect(await buildResponse('inverno')).toContain('Maldive');
+    expect(await buildResponse('visto')).toContain('Italiani');
+    expect(await buildResponse('grazie')).toContain('piacere assisterla');
   });
 
-  it('should cover specific destination branches', () => {
-    expect(buildResponse('Giappone')).toContain('Tokyo');
-    expect(buildResponse('Bali')).toContain('Ubud');
+  it('should cover specific destination branches', async () => {
+    expect(await buildResponse('Giappone')).toContain('Tokyo');
+    expect(await buildResponse('Bali')).toContain('Ubud');
   });
 
-  it('should cover fallback', () => {
-    expect(buildResponse('asdfghjkl')).toContain('Senior Curator');
+  it('should cover fallback', async () => {
+    expect(await buildResponse('asdfghjkl')).toContain('Mock AI response');
   });
 
-  it('should cover UI functions', () => {
+  it('should cover UI functions', async () => {
     document.body.innerHTML = `
       <div id="chatbot-panel"></div>
       <div id="chatbot-messages"></div>
       <input id="chatbot-input">
     `;
-    AtlasBot.init(); // This will trigger listeners
+    SophosBot.init(); // This will trigger listeners
     
     // Test toggle
     const panel = document.getElementById('chatbot-panel');
@@ -35,7 +35,7 @@ describe('AtlasBot Deep Coverage', () => {
     expect(panel.classList.contains('chat-open')).toBe(true);
     
     // Call buildResponse with different branch triggers
-    expect(buildResponse('visti')).toBeDefined(); // intent branch
-    expect(buildResponse('hotel')).toBeDefined(); // hotelSearch branch
+    expect(await buildResponse('visti')).toBeDefined(); // intent branch
+    expect(await buildResponse('hotel')).toBeDefined(); // hotelSearch branch
   });
 });

@@ -116,7 +116,16 @@ export function renderUpcomingGrid(filter = 'all') {
           <div class="card-section">
             <h4><i class="fa-solid fa-hotel"></i> Hotel Proposti (${b.hotels.length})</h4>
             <div class="hotel-labels">
-              ${b.hotels.map(h => `<span class="hotel-pill">${escapeHTML(h.name)}</span>`).join('')}
+              ${b.hotels.map(h => `
+                <div class="hotel-pill-wrapper">
+                  <span class="hotel-pill">${escapeHTML(h.name)}</span>
+                  ${h.fromRepo ? `
+                    <button type="button" class="pill-action" onclick="window.showHotelDetails('${escapeHTML(h.name.replace(/'/g, "\\'"))}', '${escapeHTML(h.zone.replace(/'/g, "\\'"))}')" title="Vedi Scheda">
+                      <i class="fa-solid fa-up-right-from-square"></i>
+                    </button>
+                  ` : ''}
+                </div>
+              `).join('')}
             </div>
             <button class="btn-primary outline btn-sm" style="margin-top:0.8rem;" onclick="window.viewComparison('${b.id}')">
               Confronta Opzioni <i class="fa-solid fa-scale-balanced"></i>
@@ -160,15 +169,53 @@ export function renderHistory() {
     return;
   }
 
+  const defaultImages = {
+    viaggio: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80',
+    lavoro: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=600&q=80',
+    tennis: 'https://images.unsplash.com/photo-1595435934249-5df7ed86e1c0?auto=format&fit=crop&w=600&q=80',
+    generica: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=600&q=80'
+  };
+
   container.innerHTML = state.data.history.map(b => `
-    <div class="history-item animate-fade">
-      <div class="h-icon ${b.type}"><i class="fa-solid ${b.type === 'viaggio' ? 'fa-plane' : (b.type === 'lavoro' ? 'fa-briefcase' : 'fa-table-tennis-paddle-ball')}"></i></div>
-      <div class="h-info">
-        <h4>${escapeHTML(b.title)}</h4>
-        <p>${b.date} • ${escapeHTML(b.description)}</p>
+    <div class="history-card animate-fade">
+      <div class="card-image">
+        <img src="${b.image || defaultImages[b.type] || defaultImages.generica}" alt="${escapeHTML(b.title)}">
+        <div class="card-badge">${b.type.toUpperCase()}</div>
       </div>
-      <div class="h-action">
-        <button class="icon-btn delete" onclick="window.deleteBookingPrompt('${b.id}')"><i class="fa-solid fa-trash"></i></button>
+      <div class="card-content">
+        <div class="card-header">
+          <h3>${escapeHTML(b.title)}</h3>
+        </div>
+        <div class="card-date">
+          <i class="fa-solid fa-calendar-check"></i> ${b.date} ${b.endDate ? ' - ' + b.endDate : ''}
+        </div>
+        <p class="card-desc">${escapeHTML(b.description)}</p>
+        
+        ${b.hotels && b.hotels.length > 0 ? `
+          <div style="margin-top:0.5rem;">
+            <div class="hotel-labels">
+              ${b.hotels.slice(0, 3).map(h => `
+                <div class="hotel-pill-wrapper" style="border-radius:6px;">
+                  <span class="hotel-pill" style="font-size:0.75rem; padding:0.4rem 0.7rem;">${escapeHTML(h.name)}</span>
+                  ${h.fromRepo ? `
+                    <button type="button" class="pill-action" style="width:28px;" onclick="window.showHotelDetails('${escapeHTML(h.name.replace(/'/g, "\\'"))}', '${escapeHTML(h.zone.replace(/'/g, "\\'"))}')" title="Vedi Scheda">
+                      <i class="fa-solid fa-up-right-from-square" style="font-size:0.6rem;"></i>
+                    </button>
+                  ` : ''}
+                </div>
+              `).join('')}
+              ${b.hotels.length > 3 ? `<div class="hotel-pill-wrapper" style="border-radius:6px; opacity:0.6;"><span class="hotel-pill" style="font-size:0.75rem; padding:0.4rem 0.7rem;">+${b.hotels.length - 3}</span></div>` : ''}
+            </div>
+          </div>
+        ` : ''}
+      </div>
+      <div class="card-footer">
+        <button class="btn-premium-link" style="padding:0.5rem 1rem; font-size:0.8rem;" onclick="window.viewComparison('${b.id}')">
+          <i class="fa-solid fa-eye"></i> Dettagli
+        </button>
+        <button class="btn-history-delete" onclick="window.deleteBookingPrompt('${b.id}')" title="Elimina definitivamente">
+          <i class="fa-solid fa-trash-can"></i>
+        </button>
       </div>
     </div>
   `).join('');
@@ -219,7 +266,13 @@ export function switchView(viewName) {
  */
 let activeHotelZone = 'TOP5';
 
+export function handleHotelSearch(query) {
+  state.hotelSearchQuery = query.toLowerCase();
+  renderHotelsView();
+}
+
 export function switchHotelTab(zoneName) {
+  state.hotelSearchQuery = ''; // Clear search on tab switch
   activeHotelZone = zoneName;
   renderHotelsView();
 }
@@ -252,9 +305,16 @@ function renderHotelCard(h, isFeatured = false, rank = 0) {
         <p class="spa-info-text">${escapeHTML(h.spa)}</p>
       </div>
       <div class="card-meta-row">
-        <div class="meta-item">
-          <i class="fa-solid fa-clock"></i> 
-          ${h.distanceKm ? `${h.distanceKm} KM • ${h.distanceTime}` : escapeHTML(h.distance)}
+        <div class="meta-item" style="flex-direction:column; align-items:flex-start; gap:0.2rem;">
+          <div style="display:flex; align-items:center; gap:0.5rem;">
+            <i class="fa-solid fa-clock"></i> 
+            ${h.distanceKm ? `${h.distanceKm} KM • ${h.distanceTime}` : escapeHTML(h.distance)}
+          </div>
+          ${h.details?.location ? `
+            <div class="hotel-card-locality" style="font-size:0.75rem; color:var(--accent-gold); opacity:0.9; margin-left:1.4rem;">
+              <i class="fa-solid fa-location-dot" style="font-size:0.7rem;"></i> ${escapeHTML(h.details.location)}
+            </div>
+          ` : ''}
         </div>
         <div class="meta-item"><span class="price-pill">${escapeHTML(h.price)}</span></div>
       </div>
@@ -289,22 +349,59 @@ export function renderHotelsView() {
 
   let html = `<div class="hotel-repo-container">`;
   html += `
-    <nav class="hotel-tabs-nav">
-      <button class="tab-btn tab-btn-priority ${activeHotelZone === 'TOP5' ? 'active' : ''}" onclick="window.switchHotelTab('TOP5')">
-        <i class="fa-solid fa-crown"></i> EXCLUSIVE TOP 5
-      </button>
-      ${HOTEL_REPOSITORY.map(z => {
-        const escZone = z.zone.replace(/'/g, "\\'");
-        return `
-          <button class="tab-btn ${activeHotelZone === z.zone ? 'active' : ''}" onclick="window.switchHotelTab('${escZone}')">
-            <i class="fa-solid ${z.icon}"></i> ${escapeHTML(z.zone)}
-          </button>
-        `;
-      }).join('')}
-    </nav>
+    <div class="repo-header-bar">
+      <div class="hotel-search-wrapper">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input type="text" class="hotel-search-box" placeholder="Ricerca veloce nella collezione..." 
+               oninput="window.handleHotelSearch(this.value)" value="${escapeHTML(state.hotelSearchQuery)}">
+      </div>
+      <nav class="hotel-tabs-nav">
+        <button class="tab-btn tab-btn-priority ${activeHotelZone === 'TOP5' && !state.hotelSearchQuery ? 'active' : ''}" onclick="window.switchHotelTab('TOP5')">
+          <i class="fa-solid fa-crown"></i> TOP 5
+        </button>
+        ${HOTEL_REPOSITORY.map(z => {
+          const escZone = z.zone.replace(/'/g, "\\'");
+          const isActive = activeHotelZone === z.zone && !state.hotelSearchQuery;
+          return `
+            <button class="tab-btn ${isActive ? 'active' : ''}" onclick="window.switchHotelTab('${escZone}')">
+              <i class="fa-solid ${z.icon}"></i> ${escapeHTML(z.zone)}
+            </button>
+          `;
+        }).join('')}
+      </nav>
+    </div>
   `;
 
-  if (activeHotelZone === 'TOP5') {
+  if (state.hotelSearchQuery) {
+    const query = state.hotelSearchQuery;
+    const results = [];
+    HOTEL_REPOSITORY.forEach(z => {
+      z.hotels.forEach(h => {
+        if (h.name.toLowerCase().includes(query) || 
+            h.spa.toLowerCase().includes(query) || 
+            z.zone.toLowerCase().includes(query)) {
+          results.push({...h, zone: z.zone});
+        }
+      });
+    });
+
+    html += `
+      <section class="hotel-section-wrapper animate-fade">
+        <div class="section-header" style="margin-bottom:2rem;">
+          <h2 style="font-size:1.5rem; color:var(--accent-gold);">Risultati Ricerca: "${escapeHTML(query)}"</h2>
+          <p style="color:var(--text-muted);">${results.length} hotel trovati</p>
+        </div>
+        ${results.length > 0 ? `
+          <div class="hotel-cards-grid">${results.map(h => renderHotelCard(h)).join('')}</div>
+        ` : `
+          <div class="no-results-box" style="padding:4rem; text-align:center; background:rgba(255,255,255,0.02); border-radius:20px; border:1px dashed rgba(255,255,255,0.1);">
+            <i class="fa-solid fa-face-frown" style="font-size:3rem; color:var(--text-muted); margin-bottom:1rem;"></i>
+            <p style="color:var(--text-muted);">Nessun hotel corrisponde alla tua ricerca.</p>
+          </div>
+        `}
+      </section>
+    `;
+  } else if (activeHotelZone === 'TOP5') {
     const allHotels = HOTEL_REPOSITORY.flatMap(z => z.hotels.map(h => ({...h, zone: z.zone})));
     const top5 = [...allHotels].sort((a, b) => b.rating - a.rating).slice(0, 5);
     html += `
@@ -416,7 +513,9 @@ export function hookCurrentHotelToPlan() {
   
   // Chiama l'handler per aggiungere l'hotel e aprire il wizard
   import('./handlers.js').then(m => {
-    m.addHotelsToPlan(json);
+    m.addHotelFromRepo(h, h.zone); // Usa addHotelFromRepo per includere metadati
+    openPlanTripModal(false);
+    document.querySelector('.hotel-section')?.scrollIntoView({ behavior: 'smooth' });
     showToast(`Hotel "${h.name}" agganciato al piano di viaggio.`, 'success');
   });
 }
@@ -424,56 +523,115 @@ export function hookCurrentHotelToPlan() {
 window.hookCurrentHotelToPlan = hookCurrentHotelToPlan;
 
 
-/**
- * Renders the hotel list in the Plan Trip modal.
- */
 export function renderPlanHotels(prefix) {
   const container = document.getElementById(`${prefix}-hotel-list`);
   if (!container) return;
   
   if (state.currentHotelsEdit.length === 0) {
-    container.innerHTML = `<p style="text-align:center;color:var(--text-muted);font-size:0.85rem;padding:2rem;">Nessuna opzione hotel aggiunta. Trascina qui o clicca il tasto sotto per iniziare la comparazione.</p>`;
+    container.innerHTML = `<p style="text-align:center;color:var(--text-muted);font-size:0.85rem;padding:2rem;">Nessuna opzione hotel aggiunta. Cerca nel repository sopra o clicca "Aggiungi Proposta Manuale" per iniziare.</p>`;
     return;
   }
 
   container.innerHTML = state.currentHotelsEdit.map((h, i) => `
-    <div class="hotel-entry-card">
-      <button type="button" class="btn-remove-hotel" onclick="window.removeHotelRow('${prefix}', ${i})" title="Rimuovi Opzione">
-        <i class="fa-solid fa-trash-can"></i>
-      </button>
+    <div class="hotel-entry-card animate-fade">
+      <div class="card-action-bar">
+        ${h.fromRepo ? `
+          <button type="button" class="btn-view-repo" onclick="window.showHotelDetails('${escapeHTML(h.name.replace(/'/g, "\\'"))}', '${escapeHTML(h.zone.replace(/'/g, "\\'"))}')" title="Vedi nel Repository">
+            <i class="fa-solid fa-eye"></i> Vedi Scheda
+          </button>
+        ` : ''}
+        <button type="button" class="btn-remove-hotel" onclick="window.removeHotelRow('${prefix}', ${i})" title="Rimuovi Opzione">
+          <i class="fa-solid fa-trash-can"></i>
+        </button>
+      </div>
       
       <div class="input-with-icon full-width">
-        <i class="fa-solid fa-hotel"></i>
-        <input type="text" placeholder="Nome Hotel (es. Lefay Resort, Mandarin Oriental...)" value="${escapeHTML(String(h.name))}" onchange="window.updateHotelField(${i}, 'name', this.value)">
+        <i class="fa-solid fa-hotel" style="color:var(--accent-gold);"></i>
+        <input type="text" class="wizard-input-large" placeholder="Nome Hotel (es. Lefay Resort, Mandarin Oriental...)" value="${escapeHTML(String(h.name))}" onchange="window.updateHotelField(${i}, 'name', this.value)">
       </div>
 
       <div class="input-with-icon full-width">
-        <i class="fa-solid fa-spa"></i>
-        <input type="text" placeholder="Dettagli SPA & Servizi Esclusivi" value="${escapeHTML(String(h.spa))}" onchange="window.updateHotelField(${i}, 'spa', this.value)">
+        <i class="fa-solid fa-spa" style="color:var(--accent-gold);"></i>
+        <input type="text" class="wizard-input-large" placeholder="Dettagli SPA & Servizi Esclusivi" value="${escapeHTML(String(h.spa))}" onchange="window.updateHotelField(${i}, 'spa', this.value)">
       </div>
 
       <div class="input-with-icon">
         <i class="fa-solid fa-route"></i>
-        <input type="text" placeholder="Distanza" value="${escapeHTML(String(h.distance))}" onchange="window.updateHotelField(${i}, 'distance', this.value)">
+        <input type="text" class="wizard-input-large" placeholder="Distanza" value="${escapeHTML(String(h.distance))}" onchange="window.updateHotelField(${i}, 'distance', this.value)">
       </div>
 
       <div class="input-with-icon">
         <i class="fa-solid fa-tag"></i>
-        <input type="text" placeholder="Prezzo/Notte" value="${escapeHTML(String(h.price))}" onchange="window.updateHotelField(${i}, 'price', this.value)">
+        <input type="text" class="wizard-input-large" placeholder="Prezzo/Notte" value="${escapeHTML(String(h.price))}" onchange="window.updateHotelField(${i}, 'price', this.value)">
       </div>
 
       <div class="input-with-icon">
         <i class="fa-solid fa-star"></i>
-        <input type="text" placeholder="Rating (es. 9.5)" value="${escapeHTML(String(h.rating))}" onchange="window.updateHotelField(${i}, 'rating', this.value)">
+        <input type="text" class="wizard-input-large" placeholder="Rating (es. 9.5)" value="${escapeHTML(String(h.rating))}" onchange="window.updateHotelField(${i}, 'rating', this.value)">
       </div>
 
       <div class="input-with-icon">
         <i class="fa-solid fa-link"></i>
-        <input type="text" placeholder="Link Sito" value="${escapeHTML(String(h.link))}" onchange="window.updateHotelField(${i}, 'link', this.value)">
+        <input type="text" class="wizard-input-large" placeholder="Link Sito" value="${escapeHTML(String(h.link))}" onchange="window.updateHotelField(${i}, 'link', this.value)">
       </div>
     </div>
   `).join('');
 }
+
+/**
+ * Renders the hotel repository selector in the wizard.
+ */
+export function renderHotelSelector(query = '') {
+  const container = document.getElementById('pt-repo-selector');
+  if (!container) return;
+
+  const lowQuery = query.toLowerCase();
+  let html = '';
+
+  HOTEL_REPOSITORY.forEach(zone => {
+    const filteredHotels = zone.hotels.filter(h => 
+      h.name.toLowerCase().includes(lowQuery) || 
+      zone.zone.toLowerCase().includes(lowQuery) ||
+      (h.spa && h.spa.toLowerCase().includes(lowQuery))
+    );
+
+    if (filteredHotels.length > 0) {
+      html += `
+        <div class="selector-section">
+          <div class="selector-section-title"><i class="fa-solid ${zone.icon}"></i> ${escapeHTML(zone.zone)}</div>
+          <div class="selector-grid">
+            ${filteredHotels.map(h => `
+              <div class="selector-card" onclick="window.selectHotelFromRepo('${escapeHTML(h.name.replace(/'/g, "\\'"))}', '${escapeHTML(zone.zone.replace(/'/g, "\\'"))}')">
+                <div class="h-name">${escapeHTML(h.name)}</div>
+                <div class="h-spa">${escapeHTML(h.spa.length > 80 ? h.spa.substring(0, 80) + '...' : h.spa)}</div>
+                <div class="h-meta">
+                  <span><i class="fa-solid fa-star"></i> ${h.rating}</span>
+                  <span>${escapeHTML(h.price)}</span>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+  });
+
+  if (html === '') {
+    html = `<div style="text-align:center; padding:2rem; color:var(--text-muted);">Nessun hotel trovato nel repository per "${escapeHTML(query)}".</div>`;
+  }
+
+  container.innerHTML = html;
+}
+
+window.handleRepoSearch = (val) => renderHotelSelector(val);
+window.selectHotelFromRepo = async (name, zoneName) => {
+  const h = HOTEL_REPOSITORY.find(z => z.zone === zoneName)?.hotels.find(hotel => hotel.name === name);
+  if (h) {
+    const handlers = await import('./handlers.js');
+    handlers.addHotelFromRepo(h, zoneName);
+    showToast(`"${name}" aggiunto al piano.`, 'success');
+  }
+};
 
 /**
  * Renders attachments in the edit modal.
@@ -514,6 +672,7 @@ export function openPlanTripModal(shouldReset = true) {
     updateWizardUI();
     renderPlanHotels('pt');
     renderEditAttachments('pt');
+    renderHotelSelector(); // 🛡️ Initialize repository selector
   }
 }
 
@@ -744,13 +903,78 @@ export function closePreviewModal() {
   }
 }
 
-window.showToast = showToast;
-window.showLuxuryConfirm = showLuxuryConfirm;
-window.closePreviewModal = closePreviewModal;
-// 🛡️ Global Registration (Hardened)
-window.showLuxuryConfirm = showLuxuryConfirm;
-window.switchView = switchView;
-window.renderDashboard = renderDashboard;
-window.renderUpcomingGrid = renderUpcomingGrid;
-window.renderHistory = renderHistory;
-window.showToast = showToast;
+
+/**
+ * Opens comparison modal for hotels in a trip.
+ */
+export function viewComparison(id) {
+  const item = state.data.upcoming.find(b => b.id == id) || state.data.history.find(h => h.id == id);
+  if (!item || !item.hotels || item.hotels.length === 0) {
+    showToast("Nessuna opzione hotel da confrontare per questo elemento.", "warning");
+    return;
+  }
+
+  const titleEl = document.getElementById('comp-modal-title');
+  if (titleEl) titleEl.textContent = `Confronto Opzioni: ${item.title}`;
+
+  const table = document.getElementById('comparison-table-body');
+  if (!table) return;
+
+  let html = `
+    <thead>
+      <tr>
+        <th>Hotel</th>
+        <th>SPA / Wellness</th>
+        <th>Distanza / Location</th>
+        <th>Rating</th>
+        <th>Prezzo</th>
+        <th>Azioni</th>
+      </tr>
+    </thead>
+    <tbody>
+  `;
+
+  html += item.hotels.map(h => `
+    <tr>
+      <td>
+        <strong style="color:var(--text-main); font-size:1rem;">${escapeHTML(h.name)}</strong>
+      </td>
+      <td>
+        <div class="spa-details" style="font-size:0.8rem; color:var(--text-muted); line-height:1.4; max-width:250px;">${escapeHTML(h.spa)}</div>
+      </td>
+      <td>
+        <div class="distance-info" style="font-size:0.85rem; color:var(--text-main);">
+          <i class="fa-solid fa-map-pin" style="color:var(--accent-gold); margin-right:5px;"></i>
+          ${escapeHTML(h.distance)}
+        </div>
+      </td>
+      <td>
+        <div class="vote-badge" style="background:var(--accent-gold); color:#000; padding:0.2rem 0.6rem; border-radius:6px; font-weight:700; display:inline-block;">${h.rating || 'N/A'}</div>
+      </td>
+      <td>
+        <span class="price-tag" style="color:var(--accent-gold); font-weight:600; font-size:0.95rem;">${escapeHTML(h.price)}</span>
+      </td>
+      <td>
+        <div style="display:flex; gap:10px;">
+          ${h.fromRepo ? `
+            <button class="icon-btn-luxury" onclick="window.showHotelDetails('${escapeHTML(h.name.replace(/'/g, "\\'"))}', '${escapeHTML(h.zone.replace(/'/g, "\\'"))}')" title="Vedi Scheda">
+              <i class="fa-solid fa-eye"></i>
+            </button>
+          ` : ''}
+          <a href="${h.link}" target="_blank" class="icon-btn-luxury" title="Sito Ufficiale">
+            <i class="fa-solid fa-external-link"></i>
+          </a>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+
+  html += `</tbody>`;
+  table.innerHTML = html;
+
+  document.getElementById('comparisonModal')?.classList.add('active');
+}
+
+export function closeComparisonModal() {
+  document.getElementById('comparisonModal')?.classList.remove('active');
+}

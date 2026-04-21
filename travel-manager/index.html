@@ -47,9 +47,6 @@
       </ul>
       
       <div class="sidebar-footer">
-        <a href="https://piedipazzerelli.direct.quickconnect.to:5001/?launchApp=SYNO.SDS.Drive.Application#/signin" target="_blank" class="btn-action">
-          <i class="fa-solid fa-hard-drive" style="color:var(--accent-primary);"></i> Synology NAS
-        </a>
         <a href="https://calendar.google.com" target="_blank" class="btn-action">
           <i class="fa-regular fa-calendar-check" style="color:#34a853;"></i> Google Calendar
         </a>
@@ -148,7 +145,7 @@
       </div>
 
       <div class="view-container hidden" id="history-view">
-        <div class="timeline" id="history-timeline">
+        <div class="history-grid" id="history-timeline">
           <!-- Injected by JS -->
         </div>
       </div>
@@ -197,7 +194,7 @@
     <div class="chatbot-header">
       <img src="assets/logo_full.png" class="chatbot-header-logo" alt="OdusIA Logo">
       <div class="chatbot-header-info">
-        <h4>Atlas — Travel Expert</h4>
+        <h4>Sophos — Travel Expert</h4>
         <p>Online · Sempre pronto a esplorare</p>
       </div>
       <div class="chatbot-header-actions">
@@ -223,8 +220,9 @@
 
     <!-- Quick Suggestions -->
     <div class="chat-suggestions" id="chat-suggestions">
-      <button class="suggestion-chip" data-query="Inizia Curatela" style="border-color:var(--accent-gold); color:var(--accent-gold); font-weight:700;">✨ Consultazione Lusso</button>
-      <button class="suggestion-chip" data-query="Cosa portare in valigia?">🧳 Valigia</button>
+      <button class="suggestion-chip" data-query="Resort d'eccellenza in Val d'Aosta">🏔️ Wellness Alpino</button>
+      <button class="suggestion-chip" data-query="Migliori SPA in Trentino">🧖 SPA Trentino</button>
+      <button class="suggestion-chip" data-query="Esperienze Luxury in Toscana">🍷 Luxury Toscana</button>
     </div>
 
     <!-- Input -->
@@ -301,27 +299,38 @@
           <p class="wizard-hero-subtitle">Inserisci la tua destinazione e il periodo desideratoper iniziare a definire il tuo itinerario esclusivo.</p>
           
           <div class="wizard-form-container">
-            <div class="form-group">
-              <label style="font-size: 1.1rem; margin-bottom: 0.8rem; display: block;">Destinazione</label>
-              <div class="input-with-icon">
-                <i class="fa-solid fa-location-dot" style="font-size: 1.4rem;"></i>
-                <input type="text" id="pt-dest" class="wizard-input-large" placeholder="es. Maldive, Courchevel, Tokyo..." required>
+            <div class="wizard-card-group">
+              <div class="wizard-card-header">
+                <i class="fa-solid fa-earth-europe"></i>
+                <h3>Destinazione d'Elezione</h3>
+              </div>
+              <div class="form-group">
+                <div class="input-with-icon full-width">
+                  <i class="fa-solid fa-location-dot" style="font-size: 1.4rem;"></i>
+                  <input type="text" id="pt-dest" class="wizard-input-large" placeholder="Dove desideri recarti? (es. Mauritius, St. Moritz...)" required>
+                </div>
               </div>
             </div>
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
-              <div class="form-group">
-                <label style="font-size: 1.1rem; margin-bottom: 0.8rem; display: block;">Data Partenza</label>
-                <div class="input-with-icon">
-                  <i class="fa-solid fa-calendar-plus" style="font-size: 1.4rem;"></i>
-                  <input type="date" id="pt-start" class="wizard-input-large" required>
-                </div>
+            <div class="wizard-card-group">
+              <div class="wizard-card-header">
+                <i class="fa-solid fa-clock"></i>
+                <h3>Periodo del Soggiorno</h3>
               </div>
-              <div class="form-group">
-                <label style="font-size: 1.1rem; margin-bottom: 0.8rem; display: block;">Data Ritorno</label>
-                <div class="input-with-icon">
-                  <i class="fa-solid fa-calendar-check" style="font-size: 1.4rem;"></i>
-                  <input type="date" id="pt-end" class="wizard-input-large" required>
+              <div class="wizard-grid-2">
+                <div class="form-group">
+                  <label style="font-size: 0.9rem; margin-bottom: 0.5rem; display: block; color: var(--text-muted);">Check-in</label>
+                  <div class="input-with-icon">
+                    <i class="fa-solid fa-calendar-plus" style="font-size: 1.2rem;"></i>
+                    <input type="date" id="pt-start" class="wizard-input-large" required>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label style="font-size: 0.9rem; margin-bottom: 0.5rem; display: block; color: var(--text-muted);">Check-out</label>
+                  <div class="input-with-icon">
+                    <i class="fa-solid fa-calendar-check" style="font-size: 1.2rem;"></i>
+                    <input type="date" id="pt-end" class="wizard-input-large" required>
+                  </div>
                 </div>
               </div>
             </div>
@@ -334,22 +343,34 @@
           <p class="wizard-hero-subtitle">Gestisci i dettagli dei voli e carica i documenti necessari per avere tutto a portata di mano.</p>
           
           <div class="wizard-form-container">
-            <div class="form-group">
-              <label style="font-size: 1.1rem; margin-bottom: 0.8rem; display: block;">Dettagli Volo</label>
-              <div class="input-with-icon">
-                <i class="fa-solid fa-plane" style="font-size: 1.4rem;"></i>
-                <input type="text" id="pt-flight" class="wizard-input-large" placeholder="Codice volo, compagnia, terminal...">
+            <div class="wizard-card-group">
+              <div class="wizard-card-header">
+                <i class="fa-solid fa-plane-departure"></i>
+                <h3>Voli & Trasferimenti</h3>
+              </div>
+              <div class="form-group">
+                <div class="input-with-icon full-width">
+                  <i class="fa-solid fa-plane" style="font-size: 1.4rem;"></i>
+                  <input type="text" id="pt-flight" class="wizard-input-large" placeholder="Dettagli volo (compagnia, orari, priority...)">
+                </div>
               </div>
             </div>
 
-            <div class="form-group">
-              <label style="font-size: 1.1rem; margin-bottom: 0.8rem; display: block;">Documenti e Media</label>
-              <div class="input-with-icon">
-                <i class="fa-solid fa-paperclip" style="font-size: 1.4rem;"></i>
-                <input type="file" id="pt-attachment" class="wizard-input-large" accept=".pdf,.png,.jpg,.jpeg,.docx,.xlsx,.pptx,.zip" multiple onchange="window.handleFileSelection(event, 'pt')">
+            <div class="wizard-card-group">
+              <div class="wizard-card-header">
+                <i class="fa-solid fa-folder-open"></i>
+                <h3>Documentazione di Viaggio</h3>
               </div>
-              <div id="pt-existing-attachments" style="margin-top: 1rem;"></div>
-              <div id="pt-upload-status" style="display:none; color:var(--accent-travel); margin-top: 0.5rem;">Caricamento in corso...</div>
+              <div class="form-group">
+                <div class="input-with-icon full-width">
+                  <i class="fa-solid fa-paperclip" style="font-size: 1.4rem;"></i>
+                  <input type="file" id="pt-attachment" class="wizard-input-large" accept=".pdf,.png,.jpg,.jpeg,.docx,.xlsx,.pptx,.zip" multiple onchange="window.handleFileSelection(event, 'pt')">
+                </div>
+                <div id="pt-existing-attachments" style="margin-top: 1.5rem;"></div>
+                <div id="pt-upload-status" style="display:none; color:var(--accent-travel); margin-top: 1rem; font-weight:600;">
+                  <i class="fa-solid fa-spinner fa-spin"></i> Archiviazione sicura in corso...
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -360,9 +381,26 @@
           <p class="wizard-hero-subtitle">Inserisci le opzioni hotel per la comparazione finale e seleziona il meglio per il tuo soggiorno.</p>
           
           <div class="wizard-form-container">
+            <!-- 🛡️ REPOSITORY SELECTOR SECTION -->
+            <div class="hotel-selector-container animate-fade">
+              <div class="repo-search-wrapper">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="pt-repo-search" class="repo-search-input" placeholder="Cerca nel Repository Luxury (es. Lefay, Trentino...)" oninput="window.handleRepoSearch(this.value)">
+              </div>
+              <div id="pt-repo-selector" class="hotel-selector-panel">
+                <!-- Dynamically populated -->
+              </div>
+            </div>
+
+            <!-- 🛡️ SELECTED HOTELS SECTION -->
+            <div class="wizard-card-header">
+              <i class="fa-solid fa-star"></i>
+              <h3>Opzioni Selezionate per il Piano</h3>
+            </div>
             <div id="pt-hotel-list"></div>
-            <button type="button" class="btn-primary outline" style="width:100%; padding: 1.5rem; border-radius: 12px;" onclick="window.addHotelRow('pt')">
-              <i class="fa-solid fa-plus"></i> Aggiungi Opzione Hotel Luxury
+            
+            <button type="button" class="btn-luxury-add" onclick="window.addHotelRow('pt')">
+              <i class="fa-solid fa-plus-circle"></i> Aggiungi Proposta Manuale
             </button>
           </div>
         </div>
@@ -370,14 +408,14 @@
         <!-- Wizard Navigation -->
         <div class="wizard-footer">
           <button type="button" class="btn-wizard back hidden" id="pt-prev-btn" onclick="window.changeWizardStep(-1)">
-            <i class="fa-solid fa-arrow-left"></i> Indietro
+            <i class="fa-solid fa-chevron-left"></i> Indietro
           </button>
           <div style="flex-grow: 1;"></div>
           <button type="button" class="btn-wizard next" id="pt-next-btn" onclick="window.changeWizardStep(1)">
-            Continua <i class="fa-solid fa-arrow-right"></i>
+            <img src="assets/icon_ship_gold.png" class="btn-brand-icon" alt=""> Continua <i class="fa-solid fa-chevron-right"></i>
           </button>
           <button type="submit" class="btn-wizard next hidden" id="pt-submit-btn">
-            Finalizza Viaggio <i class="fa-solid fa-check"></i>
+            <img src="assets/icon_ship_gold.png" class="btn-brand-icon" alt=""> Finalizza Viaggio <i class="fa-solid fa-check"></i>
           </button>
         </div>
 
@@ -442,6 +480,95 @@
     </div>
   </div>
 
+  <!-- 🛡️ Intelligence Import Modal -->
+  <div class="modal-overlay" id="importHotelModal">
+    <div class="modal-content hotel-factsheet animate-pop" style="max-width: 800px;">
+      <div class="modal-header" style="justify-content: space-between; align-items: center; padding: 1.5rem 2rem; border-bottom: 1px solid rgba(255,255,255,0.1);">
+        <h2 style="font-family: var(--font-heading); color: var(--accent-gold); margin: 0;">Cattura Intelligence: Nuovo Hotel</h2>
+        <button class="modal-close-btn" onclick="window.closeImportModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="factsheet-body" style="padding: 2rem; overflow-y: auto; max-height: 80vh;">
+        <form id="import-hotel-form" onsubmit="window.saveImportedHotel(event)">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+            <div class="form-group">
+              <label style="display:block; margin-bottom:0.5rem; color:var(--accent-gold); font-size:0.8rem; text-transform:uppercase;">Nome Hotel</label>
+              <input type="text" id="imp-name" class="luxury-input" required placeholder="Es. Hotel Sonne">
+            </div>
+            <div class="form-group">
+              <label style="display:block; margin-bottom:0.5rem; color:var(--accent-gold); font-size:0.8rem; text-transform:uppercase;">Zona / Località</label>
+              <input type="text" id="imp-zone" class="luxury-input" required list="zone-list" placeholder="Es. TRENTINO">
+              <datalist id="zone-list">
+                <!-- Injected by JS -->
+              </datalist>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-top: 1.5rem;">
+            <label style="display:block; margin-bottom:0.5rem; color:var(--accent-gold); font-size:0.8rem; text-transform:uppercase;">Sintesi Benessere (SPA / Vibe)</label>
+            <input type="text" id="imp-spa" class="luxury-input" placeholder="Es. Piscina panoramica, Trattamenti alpini...">
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-top: 1.5rem;">
+            <div class="form-group">
+              <label style="display:block; margin-bottom:0.5rem; color:var(--accent-gold); font-size:0.8rem; text-transform:uppercase;">Rating (0-10)</label>
+              <input type="number" id="imp-rating" class="luxury-input" step="0.1" min="0" max="10" placeholder="9.5">
+            </div>
+            <div class="form-group">
+              <label style="display:block; margin-bottom:0.5rem; color:var(--accent-gold); font-size:0.8rem; text-transform:uppercase;">Range Prezzo</label>
+              <input type="text" id="imp-price" class="luxury-input" placeholder="€300-500">
+            </div>
+            <div class="form-group">
+              <label style="display:block; margin-bottom:0.5rem; color:var(--accent-gold); font-size:0.8rem; text-transform:uppercase;">Distanza</label>
+              <input type="text" id="imp-distance" class="luxury-input" placeholder="Es. 150km, 2h Centro">
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-top: 1.5rem;">
+            <label style="display:block; margin-bottom:0.5rem; color:var(--accent-gold); font-size:0.8rem; text-transform:uppercase;">Località Specifica (Es. Porto Cervo, Madonna di Campiglio)</label>
+            <input type="text" id="imp-location" class="luxury-input" placeholder="Inserisci il comune o la zona specifica...">
+          </div>
+
+          <div class="form-group" style="margin-top: 1.5rem;">
+            <label style="display:block; margin-bottom:0.5rem; color:var(--accent-gold); font-size:0.8rem; text-transform:uppercase;">URL Sito Ufficiale</label>
+            <input type="url" id="imp-link" class="luxury-input" placeholder="https://...">
+          </div>
+
+          <div class="form-group" style="margin-top: 1.5rem;">
+            <label style="display:block; margin-bottom:0.5rem; color:var(--accent-gold); font-size:0.8rem; text-transform:uppercase;">Descrizione Estesa (Factsheet)</label>
+            <textarea id="imp-desc" class="luxury-input" rows="4" style="height: auto; width:100%;" placeholder="Descrivi il cuore della struttura..."></textarea>
+          </div>
+
+          <div class="modal-buttons" style="margin-top: 2.5rem; justify-content: center; display:flex; gap:1rem;">
+            <button type="button" class="btn-primary outline" onclick="window.closeImportModal()">Annulla</button>
+            <button type="submit" class="btn-primary">
+              <i class="fa-solid fa-cloud-arrow-up"></i> Archivia nel Repository
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🛡️ Hotel Comparison Modal -->
+  <div class="modal-overlay" id="comparisonModal">
+    <div class="modal-content comparison-modal animate-pop">
+      <div class="modal-header">
+        <h2 id="comp-modal-title">Confronto Proposte</h2>
+        <button class="modal-close-btn" onclick="window.closeComparisonModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="comparison-scroll">
+        <table class="comparison-table" id="comparison-table-body">
+          <!-- Injected by JS -->
+        </table>
+      </div>
+      <div class="modal-footer" style="justify-content: center; padding: 2rem;">
+        <button class="btn-primary" onclick="window.closeComparisonModal()">
+          <i class="fa-solid fa-check"></i> Chiudi Confronto
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- 🛡️ Luxury Confirmation Modal (Unified) -->
   <div class="modal-overlay" id="luxuryConfirmModal">
     <div class="modal-content luxury-confirm-box animate-pop">
@@ -458,6 +585,7 @@
   <!-- 🛡️ Toast Notification Container -->
   <div id="toast-container"></div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.5/marked.min.js"></script>
   <script type="module" src="js/app.js?v=2"></script>
 </body>
 </html>

@@ -18,12 +18,27 @@ If a user request contains conflicting constraints or violates security/stabilit
 
 ---
 
-## 🚀 TASK EXECUTION PROTOCOL
-Every task MUST follow these mandatory steps:
+## 🛡️ RCO PROTOCOL (ROLE-BASED CONTENT OPTIMIZATION)
+Ogni azione dell'agente deve essere preceduta dall'assunzione del ruolo più idoneo al task. L'agente non è un semplice "esecutore", ma un professionista senior specializzato. 
 
-### 1. Mandatory Jira Integration
-For EVERY code modification or feature, the agent MUST create a Jira issue before starting work.
-- **Workflow**: Create Jira Issue -> **Transition to 'IN PROGRESS'** -> Update `task.md` -> Execute Code.
+**Ruoli Mandatori:**
+- **Task UX/UI**: Senior UX/UI Designer & Product Designer.
+- **Task di Sviluppo/Codice**: Senior Software Architect o Senior Lead Developer.
+- **Task di Analisi/Business**: Senior Business Analyst.
+- **Task di Infrastruttura/DevOps**: Senior DevOps & Cloud Engineer.
+
+L'agente deve applicare il set di competenze, il linguaggio tecnico e i criteri di qualità propri del ruolo scelto.
+
+---
+
+## 🚀 TASK EXECUTION PROTOCOL
+Ogni task DEVE seguire questi passaggi obbligatori:
+
+### 1. Mandatory Jira Integration & RCO
+Per OGNI modifica al codice o nuova funzionalità, l'agente DEVE creare un issue Jira prima di iniziare il lavoro, applicando il protocollo RCO.
+- **Workflow**: Create Jira Issue (Role-Based) -> **Transition to 'IN PROGRESS'** -> Update `task.md` -> Execute Code.
+- **Precisione**: Definire chiaramente il **Contesto** e l'**Obiettivo** specifico.
+- **Anti-Allucinazione**: Inserire esempi dettagliati dell'output atteso nel task per prevenire errori o derive logiche.
 
 ### 2. Context Safety Check
 - Call `jira_search_issues` in the relevant project to find related work.
@@ -54,34 +69,42 @@ If the pipeline fails and the root cause analysis (RCA) cannot pinpoint a simple
 ---
 
 ## 🎫 JIRA TASK TEMPLATE
-Use the following format. Task types are **immutable**:
-- **Bug**: Failure in existing verified logic.
-- **Refactor**: Improvements in maintainability/performance without changing behavior.
-- **Feature**: New business requirements.
+Utilizzare il formato seguente. I tipi di task sono **immutabili**:
+- **Bug**: Fallimento in una logica esistente e verificata.
+- **Refactor**: Miglioramenti di manutenibilità/performance senza cambiare il comportamento.
+- **Feature**: Nuovi requisiti di business.
 
 ---
 ### 🎫 JIRA TASK: [SHORT TITLE]
+
 **Type:** [Feature / Refactor / Bug / Task]
 **Priority:** [High/Medium/Low]
+**Assumed Role (RCO):** [e.g., Senior UX Designer / Lead Architect]
 
-**Description:**
-[Detailed explanation of the technical requirement]
+**Context & Objective:**
+[Spiegazione dettagliata del contesto tecnico e dell'obiettivo finale da raggiungere in questo specifico task]
 
 **Technical Requirements:**
-- [Requirements...]
+- [Requisiti...]
+
+**Expected Output Examples:**
+```[format]
+// Esempio dettagliato di ciò che deve essere prodotto
+// (es: struttura file, snippet di codice chiave, formato report)
+```
 
 **Acceptance Criteria:**
 - [ ] AC 1
 - [ ] AC 2
 
 **Technical Notes & Security:**
-(Mention secrets management, API quotas, and security protocols).
+(Menzionare gestione segreti, quote API e protocolli di sicurezza).
 ---
 
 ## 🧠 REASONING & CLARITY PROTOCOL
-- **THINK STEP-BY-STEP**: Logical breakdown before any action.
-- **DOUBT = QUESTION**: STOP and ask the user if a requirement is ambiguous.
-- **TRACEABILITY**: All major changes must be reflected in `implementation_plan`, `task.md`, and `walkthrough`.
+- **THINK STEP-BY-STEP**: Ragionamento logico dettagliato e scomposizione del problema prima di ogni azione. Questo è ESSENZIALE per la precisione.
+- **DOUBT = QUESTION**: STOP immediato e richiesta di chiarimenti all'utente se un requisito è ambiguo o poco chiaro. Mai procedere su assunzioni.
+- **TRACEABILITY**: Tutte le modifiche major devono essere riflesse in `implementation_plan`, `task.md`, e `walkthrough`.
 
 ---
 

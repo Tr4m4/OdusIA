@@ -16,6 +16,7 @@ export class AppState {
     this.currentAttachmentsEdit = [];
     this.currentHotelsEdit = [];
     this.currentPlanStep = 1;
+    this.hotelSearchQuery = '';
     this.listeners = [];
     this.curatorState = {
       isActive: false,
