@@ -1,0 +1,87 @@
+version: '3.8'
+
+services:
+  # 1. OdusIA Command Center (Hub)
+  odus-hub:
+    build: 
+      context: .
+      dockerfile: Dockerfile.hub
+    container_name: odus-hub
+    restart: unless-stopped
+    ports:
+      - "8760:8760"
+    volumes:
+      - ./index.html:/app/index.html
+      - ./odus-hub-server.js:/app/odus-hub-server.js
+    environment:
+      - TZ=Europe/Rome
+
+  # 2. Travel Manager
+  travel-manager:
+    build: 
+      context: ./travel-manager
+      dockerfile: Dockerfile
+    container_name: travel-manager
+    restart: unless-stopped
+    ports:
+      - "8765:8765"
+    volumes:
+      - ./travel-manager:/app
+      - /app/node_modules
+    environment:
+      - TZ=Europe/Rome
+
+  # 3. Wellness Hub
+  wellness-hub:
+    build: 
+      context: ./wellness-consultant/dashboard
+      dockerfile: Dockerfile
+    container_name: wellness-hub
+    restart: unless-stopped
+    ports:
+      - "8766:8766"
+    volumes:
+      - ./wellness-consultant/dashboard:/app
+    environment:
+      - TZ=Europe/Rome
+
+  # 4. OECONOMIA
+  oeconomia:
+    build: 
+      context: ./oeconomia
+      dockerfile: Dockerfile
+    container_name: oeconomia
+    restart: unless-stopped
+    ports:
+      - "8767:8767"
+    volumes:
+      - ./oeconomia:/app
+    environment:
+      - TZ=Europe/Rome
+
+  # 5. FITP Email Agent (Tennis)
+  fitp-email-agent:
+    build: 
+      context: ./fitp-email-agent
+      dockerfile: Dockerfile
+    container_name: fitp-email-agent
+    restart: unless-stopped
+    volumes:
+      - ./fitp-email-agent:/app
+    environment:
+      - TZ=Europe/Rome
+
+  # 6. AletheIA News Agent
+  news-agent:
+    build:
+      context: ./ai-daily-news-agent
+      dockerfile: Dockerfile
+    container_name: news-agent
+    restart: unless-stopped
+    ports:
+      - "8768:8768"
+    volumes:
+      - ./ai-daily-news-agent:/app
+      - ./ai-daily-news-agent/output:/app/output
+    environment:
+      - TZ=Europe/Rome

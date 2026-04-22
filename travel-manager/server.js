@@ -276,7 +276,6 @@ http.createServer((req, res) => {
     });
     res.end(data);
   });
-}).listen(PORT, '127.0.0.1', () => {
+}).listen(PORT, '0.0.0.0', () => {
   console.log('Travel Manager SECURITY HARDENED server running at http://localhost:' + PORT);
 });
-
