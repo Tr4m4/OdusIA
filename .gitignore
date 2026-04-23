@@ -15,15 +15,20 @@ AGENTS_OECO.md
 .mcp.json
 list_notebooks.py
 
-# Non-Travel Projects (Must stay separate)
+# Non-Travel Projects (Isolated)
 ai-daily-news-agent/
-ai-daily-news-agent.rar
 fitp-email-agent/
 fitp-mcp-server/
 wellness-consultant/
 oeconomia/
-odus-hub-server.js
-README_GATEWAY.md
+# odus-hub-server.js (Tracked)
+# README_GATEWAY.md (Tracked)
+
+# Infrastructure (Excluded from Repo)
+docker-compose.yml
+setup_nas.sh
+update_site.sh
+Dockerfile.hub
 
 # Node.js
 node_modules/
